@@ -1,204 +1,97 @@
+package Practise;
+
 import java.util.Scanner;
-public class CorrectAtm {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Atm[] user = {
-            new Atm("satya",110209946502L,102005,25000,3),
-            new Atm("ramesh",110209946503L,200510,1200,3),
-            new Atm("aditya",110209946504L,112008,100000,3),
-            new Atm("Srujan",110209946505L,200811,15000,3)
-        };
-        System.out.println("WELCOME TO XYZ ATM");
-        System.out.println("Enter account number");
-        long accno = sc.nextLong();
-        boolean found = false;
-        for(int i=0;i<user.length;i++){
-            if(user[i].accno==accno){
-                found=true;
 
-                System.out.println("WELCOME "
-                        + user[i].name);
+public class User1 {
 
-                while(user[i].limit>0){
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		BankAccount add=new BankAccount(110209946502l, "satya", 85000, 102005);
+		System.out.println("Enter the pin");
+		int pin=sc.nextInt();
+		if(pin==(add.getPin())) {
+			System.out.println("welcome"+add.getName());
+			while (true) {
+				System.out.println("please select the option\n1. Deposit\n2. Withdraw\n 3. changepin\n4. checkbalancen\n5. Exit");
+				int op=sc.nextInt();
+				if(op==1) {
+					System.out.print("Enter the amount");
+					double amt=sc.nextDouble();
+					add.setAmount(amt);
+				}
+				else if(op==2) {
+					System.out.print("Enter the amount");
+					double amt=sc.nextDouble();
+					if(add.getBal()>amt) {
+						add.setAmount(amt);
+					}
+					else {
+						System.out.println("No sufficient amount");
+					}
+				}
+				else if(op==3) {
+					System.out.println("Enter the old pin");
+					int opin=sc.nextInt();
+					if(add.getPin()==opin) {
+						System.out.println("Enter the new pin");
+						int npin=sc.nextInt();
+						if(count(npin)) {
+							add.setPin(npin);
+							System.out.println("Pin changed Sucessfully");
+						}
+					}
+				}
+				else if(op==4) {
+					System.out.println(add.getBalance());
+				}
+				else if(op==5) {
+					System.out.println("Thank you Visit again");
+					break;
+				}
+				else {
+					System.out.println("Invalid input");
+				}
+			}
+		}
 
-                    System.out.println("Enter PIN");
-                    int pin=sc.nextInt();
-
-                    if(pin==user[i].pin){
-
-                        while(true){
-
-                            System.out.println(
-                                    "\n1.Deposit\n2.Withdraw\n3.Check Balance\n4.Change PIN\n5.Exit");
-
-                            int opt=sc.nextInt();
-
-                            if(opt==1){
-
-                                System.out.println("Enter amount");
-                                double amt=sc.nextDouble();
-
-                                user[i].balance+=amt;
-
-                                System.out.println(
-                                        "Deposited Successfully");
-
-                            }
-
-                            else if(opt==2){
-
-                                System.out.println(
-                                        "Enter amount");
-
-                                double amt=sc.nextDouble();
-
-                                if(amt<=user[i].balance){
-
-                                    user[i].balance-=amt;
-
-                                    System.out.println(
-                                            "Withdraw Successful");
-
-                                }
-
-                                else{
-                                    System.out.println(
-                                            "Insufficient balance");
-                                }
-
-                            }
-
-                            else if(opt==3){
-                                System.out.println("Balance = "+ user[i].balance);
-                            }
-
-                            else if(opt==4){
-
-                                System.out.println(
-                                        "Enter old PIN");
-
-                                int old=sc.nextInt();
-
-                                if(old==user[i].pin){
-
-                                    System.out.println(
-                                            "Enter new 6 digit PIN");
-
-                                    int newpin=sc.nextInt();
-
-                                    int temp=newpin;
-                                    int count=0;
-
-                                    while(temp>0){
-                                        temp/=10;
-                                        count++;
-                                    }
-
-                                    if(count==6){
-
-                                        user[i].pin=newpin;
-
-                                        System.out.println(
-                                                "PIN Changed Successfully");
-
-                                    }
-
-                                    else{
-                                        System.out.println(
-                                                "PIN must contain 6 digits");
-                                    }
-
-                                }
-
-                                else{
-                                    System.out.println(
-                                            "Old PIN incorrect");
-                                }
-
-                            }
-
-                            else if(opt==5){
-
-                                System.out.println(
-                                        "Thank you for using XYZ ATM");
-
-                                System.exit(0);
-
-                            }
-
-                            else{
-                                System.out.println(
-                                        "Invalid option");
-                            }
-
-                        }
-
-                    }
-
-                    else{
-
-                        user[i].limit--;
-
-                        if(user[i].limit>0){
-
-                            System.out.println(
-                                    "Wrong PIN. Attempts left: "
-                                            + user[i].limit);
-
-                        }
-
-                        else{
-
-                            System.out.println(
-                                    "Account blocked for 24 hours");
-
-                        }
-
-                    }
-
-                }
-
-                break;
-            }
-        }
-
-        if(!found){
-            System.out.println("Account not found");
-        }
-
-        
-    }
+	}
+public static boolean count(int n) {
+	int count=0;
+	while(n!=0) {
+		count++;
+		n=n/10;
+	}
+	return count==6;
 }
-
-class Atm{
-
-    String name;
-    long accno;
-    int pin;
-    double balance;
-    int limit;
-
-    public Atm(
-            String name,
-            long accno,
-            int pin,
-            double balance,
-            int limit)
-        {
-
-        this.name=name;
-        this.accno=accno;
-        this.pin=pin;
-        this.balance=balance;
-        this.limit=limit;
-    }
-
-    public String toString(){
-
-        return this.name+" "+this.accno+" "+this.pin+" "+this.balance;
-    }
 }
-
-
-
-
+final class BankAccount{
+	private long acno;
+	private String name;
+	private double balance;
+	private int pin;
+	public BankAccount(long acno, String name, double balance, int pin) {
+		super();
+		this.acno = acno;
+		this.name = name;
+		this.balance = balance;
+		this.pin = pin;
+	}
+	public int  getPin() {
+		return pin;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setAmount(double amt) {
+		balance=amt;
+	}
+	public double getBal() {
+		return this.balance;
+	}
+	public  void setPin(int n) {
+		this.pin=n;
+	}
+	public double getBalance() {
+		return this.balance;
+	}
+}
